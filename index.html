@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PanDa | Radiant Heritage</title>
+  <meta name="description"
+    content="Experimenta la herencia radiante de la panadería china artesanal. Recetas que unen la tradición antigua con la modernidad vibrante." />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#B5161E',
+            'primary-dark': '#7B0000',
+            'primary-dim': '#A40113',
+            'primary-cont': '#FF766D',
+            'primary-text': '#FFEFED',
+            secondary: '#874E00',
+            'sec-fixed-dim': '#FFB467',
+            surface: '#F9F6F5',
+            'surf-cont': '#EAE7E7',
+            'surf-low': '#F3F0EF',
+            'surf-lowest': '#FFFFFF',
+            'surf-dim': '#D6D4D3',
+            'on-surf': '#2F2F2E',
+            'on-surf-var': '#5C5B5B',
+            outline: '#787676',
+            'outline-var': '#AFADAC',
+          },
+          fontFamily: {
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['Manrope', 'sans-serif'],
+          },
+          backgroundImage: {
+            'kinetic': 'linear-gradient(135deg, #B5161E 0%, #FFB467 100%)',
+            'kinetic-rev': 'linear-gradient(135deg, #FFB467 0%, #B5161E 100%)',
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ─── Base ─────────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: #F9F6F5;
+      color: #2F2F2E;
+      overflow-x: hidden;
+    }
+
+    /* ─── Glassmorphism Navbar ───────────────────────────── */
+    .glass-nav {
+      background: rgba(255, 239, 237, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 239, 237, 0.3);
+    }
+
+    .nav-link {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #2F2F2E;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #B5161E;
+      transition: width 0.25s ease;
+      border-radius: 2px;
+    }
+
+    .nav-link:hover {
+      color: #B5161E;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* ─── Hero SVG Overlay ─────────────────────────────── */
+    .hero-svg-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    /* ─── Product Card ─────────────────────────────────── */
+    .product-card {
+      background: #FFFFFF;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(47, 47, 46, 0.06);
+      overflow: visible;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 28px 56px rgba(47, 47, 46, 0.10);
+    }
+
+    .product-image-wrap {
+      margin: -2.5rem 1rem 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      height: 200px;
+    }
+
+    .product-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ─── Story Section Background ─────────────────────── */
+    .story-bg {
+      background: #F3F0EF;
+    }
+
+    /* ─── Floating decorative circles ─────────────────── */
+    .deco-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    /* ─── Scroll animation ─────────────────────────────── */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    [data-reveal].visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── CTA Button ───────────────────────────────────── */
+    .btn-primary {
+      background: linear-gradient(135deg, #B5161E 0%, #FFB467 100%);
+      color: #FFEFED;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      padding: 0.85rem 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: filter 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 8px 24px rgba(181, 22, 30, 0.28);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #DFDCDC;
+      color: #2F2F2E;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      padding: 0.85rem 2rem;
+      transition: background 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #D6D4D3;
+    }
+
+    /* ─── Cloud pattern overlay ────────────────────────── */
+    .cloud-line {
+      position: absolute;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    /* ─── Pastel Lunar hero video ────────────────────────── */
+    .mooncake-video-wrap {
+      position: absolute;
+      top: 0;
+      right: -4%;
+      width: 58%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      clip-path: inset(9% 0 0 0);
+    }
+    .mooncake-video-wrap video {
+      width: 100%;
+      height: 109%;
+      object-fit: contain;
+      object-position: center right;
+      mix-blend-mode: screen;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       NAVBAR — Floating Glassmorphism Pill
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <header class="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-5">
+    <nav id="main-nav" class="glass-nav rounded-full px-8 py-3 flex items-center gap-8 shadow-sm"
+      aria-label="Navegación principal">
+      <!-- Brand -->
+      <a href="#hero" class="flex items-center select-none" aria-label="PanDa Home">
+        <img src="assets/logo.png" alt="PanDa Logo" class="h-11 w-11 object-contain" />
+      </a>
+
+      <!-- Links -->
+      <div class="hidden md:flex items-center gap-7">
+        <a href="#hero" class="nav-link" id="nav-home">Home</a>
+        <a href="#nosotros" class="nav-link" id="nav-about">Nosotros</a>
+        <a href="menu.html" class="nav-link" id="nav-menu">Menú</a>
+        <a href="#blog" class="nav-link" id="nav-blog">Blog</a>
+        <a href="#contacto" class="nav-link" id="nav-contact">Contacto</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="login(1).html" class="btn-secondary text-sm hidden md:inline-flex" id="nav-login"
+        style="border-radius:0.75rem; padding:0.6rem 1.2rem; font-size:0.875rem;">
+        Iniciar sesión
+      </a>
+      <a href="menu.html" class="btn-primary text-sm hidden md:inline-flex" id="nav-cta">
+        Ordenar ahora
+      </a>
+
+      <!-- Mobile hamburger -->
+      <button id="mobile-menu-btn" class="md:hidden ml-auto p-1 rounded-lg hover:bg-surf-cont transition"
+        aria-label="Abrir menú">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect y="3" width="22" height="2" rx="1" fill="#2F2F2E" />
+          <rect y="10" width="22" height="2" rx="1" fill="#2F2F2E" />
+          <rect y="17" width="22" height="2" rx="1" fill="#2F2F2E" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu" class="hidden absolute top-20 left-4 right-4 glass-nav rounded-3xl px-6 py-5 flex-col gap-4">
+      <a href="#hero" class="nav-link block py-1" id="mob-home">Home</a>
+      <a href="#nosotros" class="nav-link block py-1" id="mob-about">Nosotros</a>
+      <a href="menu.html" class="nav-link block py-1" id="mob-menu">Menú</a>
+      <a href="#blog" class="nav-link block py-1" id="mob-blog">Blog</a>
+      <a href="#contacto" class="nav-link block py-1" id="mob-contact">Contacto</a>
+      <a href="login(1).html" class="nav-link block py-1 font-semibold" style="color:#B5161E;" id="mob-login">Iniciar sesión</a>
+    </div>
+  </header>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       HERO SECTION — Kinetic Gradient + SVG Curve
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden"
+    style="background: linear-gradient(135deg, #B5161E 0%, #C94A1A 40%, #FFB467 100%);">
+
+    <!-- Cloud line-art SVG (connective tissue) -->
+    <svg class="cloud-line" style="top:10%;left:5%;width:320px;" viewBox="0 0 320 80" fill="none">
+      <path d="M0 40 Q40 0 80 40 Q120 80 160 40 Q200 0 240 40 Q280 80 320 40" stroke="white" stroke-width="2"
+        fill="none" />
+      <path d="M0 60 Q40 20 80 60 Q120 100 160 60 Q200 20 240 60 Q280 100 320 60" stroke="white" stroke-width="1.5"
+        fill="none" opacity="0.5" />
+    </svg>
+
+    <!-- Hero Content: two-column layout -->
+    <div class="container mx-auto px-6 pt-28 pb-40 relative z-10">
+      <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-0">
+
+        <!-- LEFT: Text -->
+        <div class="flex-1 max-w-xl">
+          <!-- Sub-label -->
+          <span class="inline-block font-body text-sm font-semibold tracking-widest uppercase mb-4"
+            style="color: rgba(255,239,237,0.75);" data-reveal>
+            Herencia Radiante · Tradición China
+          </span>
+
+          <!-- Display heading -->
+          <h1 class="font-display font-extrabold leading-none mb-6" data-reveal
+            style="font-size: clamp(3rem, 7vw, 5.5rem); color: #FFEFED; letter-spacing: -0.02em;">
+            PanDa
+          </h1>
+
+          <!-- Sub-headline -->
+          <p class="font-display font-bold mb-4 leading-tight" data-reveal
+            style="font-size: clamp(1.25rem, 3vw, 2rem); color: rgba(255,239,237,0.9);">
+            Donde la tradición <br class="hidden sm:block" />cobra vida en cada bocado.
+          </p>
+
+          <!-- Body text -->
+          <p class="font-body text-base leading-relaxed mb-10 max-w-lg" data-reveal
+            style="color: rgba(255,239,237,0.75);">
+            Descubre la magia de la panadería china artesanal. Nuestras recetas unen técnicas
+            milenarias con energía moderna, creando texturas que bailan y sabores que iluminan
+            cada experiencia.
+          </p>
+
+          <!-- CTAs -->
+          <div class="flex flex-wrap gap-4" data-reveal>
+            <a href="menu.html" class="btn-primary" id="hero-cta-primary">
+              Explorar Menú
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M3 9h12m0 0-4-4m4 4-4 4" stroke="#FFEFED" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </a>
+            <a href="#nosotros" class="btn-secondary" id="hero-cta-secondary">
+              Nuestra Historia
+            </a>
+          </div>
+
+          <!-- Stats row -->
+          <div class="flex flex-wrap gap-8 mt-14" data-reveal>
+            <div>
+              <p class="font-display font-extrabold text-3xl" style="color:#FFEFED;">25+</p>
+              <p class="font-body text-sm" style="color:rgba(255,239,237,0.65);">Años de tradición</p>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-3xl" style="color:#FFEFED;">120+</p>
+              <p class="font-body text-sm" style="color:rgba(255,239,237,0.65);">Recetas únicas</p>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-3xl" style="color:#FFEFED;">4.9★</p>
+              <p class="font-body text-sm" style="color:rgba(255,239,237,0.65);">Calificación</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spacer so text doesn't overlap video -->
+        <div class="flex-1"></div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Pastel lunar con fuegos artificiales -->
+    <div class="mooncake-video-wrap">
+      <video
+        id="hero-mooncake-video"
+        src="assets/pastel_lunar.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      ></video>
+    </div>
+
+    <!-- ── SVG Dark Red Curved Shape — Bottom Left ── -->
+    <div class="hero-svg-overlay">
+      <svg viewBox="0 0 1440 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+        style="display:block;width:100%;height:auto;">
+        <!-- Large deep-red organic curve bottom-left -->
+        <path d="M0,160 L0,80 
+             C60,20 120,0 200,10
+             C320,25 380,90 480,110
+             C560,125 620,80 700,55
+             C800,25 880,40 960,70
+             C1040,100 1100,130 1200,120
+             C1300,110 1380,80 1440,60
+             L1440,160 Z" fill="#7B0000" opacity="0.88" />
+        <!-- Accent second wave — even darker -->
+        <path d="M0,160 L0,120
+             C50,90 100,75 160,85
+             C240,100 300,140 380,148
+             C440,154 480,135 520,160 Z" fill="#5A0005" opacity="0.95" />
+        <!-- Transition to page surface -->
+        <path d="M0,160 L1440,160 L1440,155
+             C1200,165 900,158 600,162
+             C300,166 100,160 0,160 Z" fill="#F9F6F5" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       MENÚ SECTION — Product Cards
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <section id="menu" class="py-20 px-6" style="background:#F3F0EF;">
+    <div class="container mx-auto">
+      <!-- Section header -->
+      <div class="mb-14 max-w-xl" data-reveal>
+        <span class="font-body text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">
+          Selección Artesanal
+        </span>
+        <h2 class="font-display font-bold leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.5rem); color:#2F2F2E;">
+          Nuestros Favoritos
+        </h2>
+        <p class="font-body text-on-surf-var mt-3 leading-relaxed">
+          Cada pieza elaborada a mano con ingredientes de primera calidad y técnicas transmitidas por generaciones.
+        </p>
+      </div>
+
+      <!-- Cards grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-10">
+
+        <!-- Card 1 -->
+        <article class="product-card pt-2 pb-6 px-4" data-reveal id="product-mooncake">
+          <div class="product-image-wrap">
+            <div
+              style="background: linear-gradient(135deg, #B5161E22, #FFB46744); height:100%; display:flex; align-items:center; justify-content:center; border-radius:1rem;">
+              <svg viewBox="0 0 120 120" width="100" height="100">
+                <circle cx="60" cy="60" r="50" fill="#B5161E" opacity="0.15" />
+                <circle cx="60" cy="60" r="38" fill="#B5161E" opacity="0.25" />
+                <circle cx="60" cy="60" r="26" fill="#B5161E" opacity="0.4" />
+                <text x="60" y="67" text-anchor="middle" font-size="28" fill="#B5161E" font-family="Plus Jakarta Sans"
+                  font-weight="800">月</text>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-5 px-2">
+            <span class="font-body text-xs font-semibold text-primary tracking-widest uppercase">Clásico</span>
+            <h3 class="font-display font-bold text-xl mt-1 text-on-surf">Pastel de Luna</h3>
+            <p class="font-body text-sm text-on-surf-var mt-2 leading-relaxed">
+              Pasta de loto con yema de huevo salada. La dulzura perfecta de cada Festival de Otoño.
+            </p>
+            <div class="flex items-center justify-between mt-5">
+              <p class="font-display font-extrabold text-xl text-primary">$48 MXN</p>
+              <button class="btn-primary text-xs py-2 px-4" id="add-mooncake">+ Agregar</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="product-card pt-2 pb-6 px-4" data-reveal id="product-pineapple">
+          <div class="product-image-wrap">
+            <div
+              style="background: linear-gradient(135deg, #FFB46733, #705900 22); height:100%; display:flex; align-items:center; justify-content:center; border-radius:1rem;">
+              <svg viewBox="0 0 120 120" width="100" height="100">
+                <ellipse cx="60" cy="70" rx="35" ry="30" fill="#FFB467" opacity="0.5" />
+                <ellipse cx="60" cy="70" rx="22" ry="19" fill="#874E00" opacity="0.4" />
+                <text x="60" y="77" text-anchor="middle" font-size="28" fill="#874E00" font-family="Plus Jakarta Sans"
+                  font-weight="800">鳳</text>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-5 px-2">
+            <span class="font-body text-xs font-semibold text-secondary tracking-widest uppercase">Delicado</span>
+            <h3 class="font-display font-bold text-xl mt-1 text-on-surf">Tarta de Piña</h3>
+            <p class="font-body text-sm text-on-surf-var mt-2 leading-relaxed">
+              Masa suave de mantequilla con relleno de mermelada de piña caramelizada. Irresistible.
+            </p>
+            <div class="flex items-center justify-between mt-5">
+              <p class="font-display font-extrabold text-xl text-primary">$35 MXN</p>
+              <button class="btn-primary text-xs py-2 px-4" id="add-pineapple">+ Agregar</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="product-card pt-2 pb-6 px-4" data-reveal id="product-sesame">
+          <div class="product-image-wrap">
+            <div
+              style="background: linear-gradient(135deg, #2F2F2E22, #5C5B5B44); height:100%; display:flex; align-items:center; justify-content:center; border-radius:1rem;">
+              <svg viewBox="0 0 120 120" width="100" height="100">
+                <circle cx="60" cy="65" r="38" fill="#2F2F2E" opacity="0.15" />
+                <circle cx="60" cy="65" r="26" fill="#2F2F2E" opacity="0.25" />
+                <text x="60" y="72" text-anchor="middle" font-size="28" fill="#2F2F2E" font-family="Plus Jakarta Sans"
+                  font-weight="800">èŠ</text>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-5 px-2">
+            <span class="font-body text-xs font-semibold text-on-surf-var tracking-widest uppercase">Artesanal</span>
+            <h3 class="font-display font-bold text-xl mt-1 text-on-surf">Bola de Sésamo</h3>
+            <p class="font-body text-sm text-on-surf-var mt-2 leading-relaxed">
+              Glutinosa crujiente rellena de pasta de frijol negro. Una textura que no olvidarás.
+            </p>
+            <div class="flex items-center justify-between mt-5">
+              <p class="font-display font-extrabold text-xl text-primary">$28 MXN</p>
+              <button class="btn-primary text-xs py-2 px-4" id="add-sesame">+ Agregar</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Ver más -->
+      <div class="text-center mt-12" data-reveal>
+        <a href="menu.html" class="font-body font-bold text-primary hover:underline underline-offset-4 transition"
+          id="see-full-menu">
+          Ver menú completo →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       NOSOTROS SECTION — Story
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <section id="nosotros" class="py-20 px-6" style="background:#F9F6F5;">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Visual column -->
+        <div class="relative flex justify-center items-center order-2 lg:order-1" data-reveal>
+          <!-- Background accent square -->
+          <div class="absolute w-72 h-72 rounded-3xl"
+            style="background: linear-gradient(135deg, #B5161E, #FFB467); opacity:0.12; transform: rotate(8deg);"></div>
+
+          <!-- Glassmorphism card -->
+          <div class="glass-nav rounded-3xl p-8 relative z-10 w-72 text-center"
+            style="border: 1px solid rgba(255,239,237,0.4);">
+            <p class="font-display font-extrabold text-6xl text-primary">25</p>
+            <p class="font-body text-sm text-on-surf-var mt-1">Años de historia</p>
+            <div style="height:1px; background: rgba(175,173,172,0.25); margin: 1rem 0;"></div>
+            <p class="font-body text-sm text-on-surf leading-relaxed">
+              "Cada pan es una carta de amor escrita a mano."
+            </p>
+            <p class="font-body text-xs text-on-surf-var mt-2">— Familia PanDa</p>
+          </div>
+
+          <!-- Floating deco bubble -->
+          <div class="absolute -bottom-6 -right-6 w-28 h-28 rounded-full"
+            style="background: linear-gradient(135deg, #FFB467, #B5161E); opacity:0.15;"></div>
+        </div>
+
+        <!-- Text column -->
+        <div class="order-1 lg:order-2" data-reveal>
+          <span class="font-body text-xs font-semibold tracking-widest uppercase text-primary mb-4 block">
+            Nuestra Historia
+          </span>
+          <h2 class="font-display font-bold leading-tight mb-6"
+            style="font-size: clamp(1.75rem, 4vw, 2.5rem); color:#2F2F2E;">
+            Herencia que trasciende generaciones
+          </h2>
+          <p class="font-body text-on-surf-var leading-relaxed mb-5">
+            PanDa nació en el corazón de la comunidad china, donde los hornos nunca se apagan
+            y el olor a pan recién horneado es el primer idioma del amor familiar.
+          </p>
+          <p class="font-body text-on-surf-var leading-relaxed mb-8">
+            Hoy, combinamos ese legado profundo con técnicas contemporáneas de repostería,
+            creando experiencias que honran el pasado mientras abrazan la modernidad vibrante.
+          </p>
+          <a href="#contacto" class="btn-primary" id="nosotros-cta">
+            Conoce al equipo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       BLOG SECTION — Editorial Grid
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <section id="blog" class="py-20 px-6" style="background:#EAE7E7;">
+    <div class="container mx-auto">
+      <div class="mb-12" data-reveal>
+        <span class="font-body text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">
+          Historias y Recetas
+        </span>
+        <h2 class="font-display font-bold" style="font-size: clamp(1.75rem, 4vw, 2.5rem); color:#2F2F2E;">
+          Del Horno a tu Pantalla
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Blog post 1 -->
+        <article class="product-card px-6 py-8 cursor-pointer" data-reveal id="blog-post-1">
+          <span class="font-body text-xs font-semibold tracking-widest uppercase text-primary">Tradición</span>
+          <h3 class="font-display font-bold text-lg mt-2 mb-3">El origen del Pastel de Luna</h3>
+          <p class="font-body text-sm text-on-surf-var leading-relaxed">
+            Una travesía por la dinastía Tang hasta las mesas contemporáneas. Descubre por qué este pastel
+            es mucho más que un postre.
+          </p>
+          <p class="font-body text-xs text-outline mt-5">12 Mar 2026 · 5 min lectura</p>
+        </article>
+
+        <!-- Blog post 2 -->
+        <article class="product-card px-6 py-8 cursor-pointer" data-reveal id="blog-post-2">
+          <span class="font-body text-xs font-semibold tracking-widest uppercase text-secondary">Técnica</span>
+          <h3 class="font-display font-bold text-lg mt-2 mb-3">Secretos de la masa glutinosa perfecta</h3>
+          <p class="font-body text-sm text-on-surf-var leading-relaxed">
+            Temperatura del agua, tiempo de reposo y el toque secreto que marca la diferencia
+            entre bueno y extraordinario.
+          </p>
+          <p class="font-body text-xs text-outline mt-5">5 Mar 2026 · 7 min lectura</p>
+        </article>
+
+        <!-- Blog post 3 -->
+        <article class="product-card px-6 py-8 cursor-pointer" data-reveal id="blog-post-3">
+          <span class="font-body text-xs font-semibold tracking-widest uppercase" style="color:#705900;">Festival</span>
+          <h3 class="font-display font-bold text-lg mt-2 mb-3">Año Nuevo Lunar: una guía de sabores</h3>
+          <p class="font-body text-sm text-on-surf-var leading-relaxed">
+            Del Nian Gao dorado al Fa Gao esponjoso — cada bocado carga el deseo de abundancia
+            y prosperidad para el año que comienza.
+          </p>
+          <p class="font-body text-xs text-outline mt-5">20 Feb 2026 · 6 min lectura</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       CONTACTO SECTION
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <section id="contacto" class="py-20 px-6"
+    style="background: linear-gradient(135deg, #B5161E 0%, #C94A1A 50%, #FFB467 100%);">
+    <div class="container mx-auto text-center max-w-2xl" data-reveal>
+      <span class="font-body text-xs font-semibold tracking-widest uppercase mb-4 block"
+        style="color:rgba(255,239,237,0.7);">
+        Encuéntranos
+      </span>
+      <h2 class="font-display font-bold mb-6 leading-tight"
+        style="font-size: clamp(1.75rem, 4vw, 2.5rem); color:#FFEFED;">
+        Visítanos o escríbenos
+      </h2>
+      <p class="font-body mb-10 leading-relaxed" style="color:rgba(255,239,237,0.8);">
+        Estamos en el corazón de la ciudad, listos para sorprenderte con sabores que cuentan historias.
+        Síguenos en nuestras redes o escríbenos directamente.
+      </p>
+
+      <!-- Contact form glass card -->
+      <div class="glass-nav rounded-3xl p-8 text-left" style="border: 1px solid rgba(255,239,237,0.3);">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="font-body text-xs font-semibold text-on-surf-var mb-1 block" for="contact-name">Nombre</label>
+            <input id="contact-name" type="text" placeholder="Tu nombre" class="w-full rounded-lg px-4 py-3 font-body text-sm bg-surf-cont text-on-surf outline-none
+                          focus:bg-surf-lowest transition placeholder:text-outline-var"
+              style="border: 1px solid rgba(175,173,172,0.15);" />
+          </div>
+          <div>
+            <label class="font-body text-xs font-semibold text-on-surf-var mb-1 block"
+              for="contact-email">Correo</label>
+            <input id="contact-email" type="email" placeholder="tu@correo.com" class="w-full rounded-lg px-4 py-3 font-body text-sm bg-surf-cont text-on-surf outline-none
+                          focus:bg-surf-lowest transition placeholder:text-outline-var"
+              style="border: 1px solid rgba(175,173,172,0.15);" />
+          </div>
+        </div>
+        <div class="mt-5">
+          <label class="font-body text-xs font-semibold text-on-surf-var mb-1 block" for="contact-msg">Mensaje</label>
+          <textarea id="contact-msg" rows="4" placeholder="¿En qué podemos ayudarte?" class="w-full rounded-lg px-4 py-3 font-body text-sm bg-surf-cont text-on-surf outline-none
+                           focus:bg-surf-lowest transition placeholder:text-outline-var resize-none"
+            style="border: 1px solid rgba(175,173,172,0.15);"></textarea>
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button class="btn-primary" id="contact-submit">
+            Enviar mensaje
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M2 9h14m0 0-5-5m5 5-5 5" stroke="#FFEFED" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       FOOTER
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <footer class="py-10 px-6" style="background:#2F2F2E;">
+    <div class="container mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <!-- Brand -->
+        <div>
+          <p class="font-display font-extrabold text-2xl" style="color:#FFEFED;">PanDa</p>
+          <p class="font-body text-xs mt-1" style="color:rgba(175,173,172,0.6);">
+            Radiant Heritage · Panadería Artesanal China
+          </p>
+        </div>
+
+        <!-- Links -->
+        <div class="flex gap-6">
+          <a href="#" class="font-body text-sm transition" style="color:rgba(255,239,237,0.6);"
+            onmouseover="this.style.color='#FFEFED'" onmouseout="this.style.color='rgba(255,239,237,0.6)'"
+            id="footer-privacy">Privacidad</a>
+          <a href="#" class="font-body text-sm transition" style="color:rgba(255,239,237,0.6);"
+            onmouseover="this.style.color='#FFEFED'" onmouseout="this.style.color='rgba(255,239,237,0.6)'"
+            id="footer-terms">Términos</a>
+          <a href="#" class="font-body text-sm transition" style="color:rgba(255,239,237,0.6);"
+            onmouseover="this.style.color='#FFEFED'" onmouseout="this.style.color='rgba(255,239,237,0.6)'"
+            id="footer-locations">Sucursales</a>
+        </div>
+
+        <!-- Copyright -->
+        <p class="font-body text-xs" style="color:rgba(175,173,172,0.45);">
+          © 2026 PanDa Radiant Heritage. Todos los derechos reservados.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       JAVASCRIPT — Mobile Menu + Scroll Reveal + Nav Blur
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <script>
+    // ── Mobile menu toggle ──────────────────────────────────
+    const mobileBtn = document.getElementById('mobile-menu-btn')
+    const mobileMenu = document.getElementById('mobile-menu')
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden')
+      mobileMenu.classList.toggle('flex')
+    })
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden')
+        mobileMenu.classList.remove('flex')
+      })
+    })
+
+    // ── Scroll: increase glass opacity on scroll ────────────
+    const nav = document.getElementById('main-nav')
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        nav.style.background = 'rgba(255, 239, 237, 0.82)'
+        nav.style.boxShadow = '0 4px 24px rgba(47,47,46,0.08)'
+      } else {
+        nav.style.background = 'rgba(255, 239, 237, 0.55)'
+        nav.style.boxShadow = ''
+      }
+    })
+
+    // ── Scroll reveal ───────────────────────────────────────
+    const reveals = document.querySelectorAll('[data-reveal]')
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80)
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.12 })
+    reveals.forEach(el => observer.observe(el))
+
+    // ── Initialize hero reveals immediately ─────────────────
+    document.querySelectorAll('#hero [data-reveal]').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), 200 + i * 120)
+    })
+  </script>
+</body>
+
+</html>

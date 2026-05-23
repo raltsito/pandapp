@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ffprobe -v quiet -print_format json -show_streams \"C:/Users/carlo/Documents/Quinto Semestre/Facultad/PROYECTOCALIDAD/assets/pastel_lunar.mp4\")",
+      "Bash(where ffmpeg:*)",
+      "Bash(where ffprobe:*)",
+      "Bash(powershell -Command \"Get-Command ffmpeg -ErrorAction SilentlyContinue; Get-Command ffprobe -ErrorAction SilentlyContinue\")",
+      "Bash(python:*)",
+      "Bash(xxd)",
+      "Bash(pip show *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\carlo\\\\Documents\\\\Quinto Semestre\\\\Facultad\\\\PROYECTOCALIDAD\" -Force)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(Test-Path \"C:\\\\Users\\\\carlo\\\\Documents\\\\Quinto Semestre\\\\Facultad\\\\PROYECTOCALIDAD\\\\core\" ; \\(Get-ChildItem -Path \"C:\\\\Users\\\\carlo\\\\Documents\\\\Quinto Semestre\\\\Facultad\\\\PROYECTOCALIDAD\\\\core\" -ErrorAction SilentlyContinue\\).Count)",
+      "PowerShell(Get-Item *)",
+      "PowerShell(python --version; python -m django --version)",
+      "Bash(Get-ChildItem *)",
+      "Bash(npx --yes create-next-app@latest panda-app --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --use-npm --eslint --no-turbopack)",
+      "PowerShell(New-Item *)",
+      "Bash(Get-Content *)",
+      "PowerShell(Select-String *)",
+      "PowerShell(Start-Process powershell -ArgumentList \"-NoExit\", \"-Command\", \"cd 'C:\\\\Users\\\\carlo\\\\Documents\\\\Quinto Semestre\\\\Facultad\\\\PROYECTOCALIDAD\\\\panda-app'; npm run dev\" -WindowStyle Normal)",
+      "PowerShell(Get-Command *)",
+      "Skill(vercel:deploy)",
+      "PowerShell(Get-ChildItem *)",
+      "Bash(vercel *)",
+      "PowerShell(vercel *)"
+    ]
+  }
+}

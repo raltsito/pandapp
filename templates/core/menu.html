@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PanDa | Menú</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red:#B5161E; --red-dark:#7B0000; --orange:#F5A623; --orange2:#FFB467;
+      --cream:#FFEFED; --surface:#F9F6F5; --on-surf:#2F2F2E; --on-var:#5C5B5B;
+      --outline:#AFADAC; --white:#FFFFFF;
+      --grad:linear-gradient(160deg,#B5161E 0%,#C94A1A 50%,#FFB467 100%);
+    }
+    body { font-family:'Manrope',sans-serif; background:var(--surface); color:var(--on-surf); min-height:100vh; }
+
+    .navbar {
+      position:sticky; top:0; z-index:100;
+      background:rgba(255,239,237,0.88); backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(181,22,30,0.10);
+      padding:14px 32px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .navbar-brand { display:flex; align-items:center; gap:10px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.3rem; color:var(--red); text-decoration:none; }
+    .navbar-brand img { height:42px; width:42px; object-fit:contain; }
+    .navbar-back { display:flex; align-items:center; gap:6px; font-family:'Manrope',sans-serif; font-size:0.85rem; font-weight:600; color:var(--on-var); text-decoration:none; transition:color 0.2s; }
+    .navbar-back:hover { color:var(--red); }
+    .cart-btn { display:flex; align-items:center; gap:8px; background:var(--grad); color:var(--cream); border:none; border-radius:50px; padding:10px 20px; font-family:'Manrope',sans-serif; font-weight:700; font-size:0.85rem; cursor:pointer; transition:filter 0.2s,transform 0.2s; position:relative; }
+    .cart-btn:hover { filter:brightness(1.08); transform:translateY(-1px); }
+    .cart-badge { background:white; color:var(--red); border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:800; }
+
+    .page-header { padding:40px 32px 20px; max-width:1100px; margin:0 auto; }
+    .page-header h1 { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-style:italic; font-size:clamp(2rem,5vw,3rem); color:var(--red); }
+    .page-header p { margin-top:6px; font-size:0.95rem; color:var(--on-var); }
+
+    .filters { padding:0 32px 28px; max-width:1100px; margin:0 auto; display:flex; gap:10px; flex-wrap:wrap; }
+    .filter-btn { padding:8px 20px; border-radius:50px; border:2px solid var(--outline); background:transparent; font-family:'Manrope',sans-serif; font-weight:600; font-size:0.82rem; color:var(--on-var); cursor:pointer; transition:all 0.2s; }
+    .filter-btn:hover,.filter-btn.active { border-color:var(--red); background:var(--red); color:white; }
+
+    .grid { max-width:1100px; margin:0 auto; padding:0 24px 60px; display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:28px; }
+
+    .card { background:var(--white); border:2.5px solid var(--red); border-radius:20px; position:relative; cursor:pointer; transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.28s ease; overflow:visible; opacity:0; transform:translateY(28px); animation:card-in 0.45s ease forwards; }
+    .card:hover { transform:translateY(-6px) scale(1.01); box-shadow:0 20px 48px rgba(181,22,30,0.18); }
+    .card::before,.card::after { content:''; position:absolute; left:50%; transform:translateX(-50%); width:14px; height:22px; background:var(--orange); border-radius:4px; z-index:2; }
+    .card::before { top:-12px; } .card::after { bottom:-12px; }
+    @keyframes card-in { to { opacity:1; transform:translateY(0); } }
+    .card:nth-child(1){animation-delay:0.05s} .card:nth-child(2){animation-delay:0.12s}
+    .card:nth-child(3){animation-delay:0.19s} .card:nth-child(4){animation-delay:0.26s}
+    .card:nth-child(5){animation-delay:0.33s} .card:nth-child(6){animation-delay:0.40s}
+
+    .card-image { background:var(--grad); border-radius:14px; margin:14px 14px 0; height:180px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .card-image svg { width:120px; height:120px; filter:drop-shadow(0 8px 20px rgba(0,0,0,0.25)); }
+    .card-body { padding:16px 18px 20px; }
+    .card-name { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-style:italic; font-size:1.15rem; color:var(--red); margin-bottom:6px; }
+    .card-desc { font-size:0.82rem; color:var(--on-var); line-height:1.5; margin-bottom:12px; }
+    .card-price { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-style:italic; font-size:1.25rem; color:var(--orange); }
+
+    .modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(47,47,46,0.55); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:white; border:2.5px solid var(--red); border-radius:24px; width:100%; max-width:760px; position:relative; overflow:visible; transform:scale(0.88) translateY(30px); transition:transform 0.38s cubic-bezier(0.34,1.56,0.64,1); }
+    .modal-overlay.open .modal { transform:scale(1) translateY(0); }
+    .modal::before,.modal::after { content:''; position:absolute; left:50%; transform:translateX(-50%); width:18px; height:28px; background:var(--orange); border-radius:5px; z-index:2; }
+    .modal::before { top:-15px; } .modal::after { bottom:-15px; }
+    .modal-inner { display:flex; gap:0; min-height:320px; }
+    .modal-image-wrap { flex:0 0 46%; background:var(--grad); border-radius:20px 0 0 20px; display:flex; align-items:center; justify-content:center; padding:30px; min-height:320px; }
+    .modal-image-wrap svg { width:200px; height:200px; filter:drop-shadow(0 12px 28px rgba(0,0,0,0.3)); }
+    .modal-info { flex:1; padding:32px 28px 28px; display:flex; flex-direction:column; }
+    .modal-name { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-style:italic; font-size:1.7rem; color:var(--red); margin-bottom:8px; }
+    .modal-divider { width:48px; height:3px; background:var(--grad); border-radius:2px; margin-bottom:14px; }
+    .modal-desc { font-size:0.9rem; color:var(--on-var); line-height:1.7; margin-bottom:18px; flex:1; }
+    .modal-price { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-style:italic; font-size:2rem; color:var(--orange); margin-bottom:20px; }
+    .modal-actions { display:flex; align-items:center; gap:12px; }
+    .qty-wrap { display:flex; align-items:center; border:2px solid #EAE7E7; border-radius:12px; overflow:hidden; }
+    .qty-btn { width:36px; height:40px; border:none; background:#F3F0EF; color:var(--on-surf); font-size:1.1rem; font-weight:700; cursor:pointer; transition:background 0.2s; }
+    .qty-btn:hover { background:#EAE7E7; }
+    .qty-num { width:40px; text-align:center; font-family:'Manrope',sans-serif; font-weight:700; font-size:1rem; color:var(--on-surf); border:none; outline:none; background:white; }
+    .add-btn { flex:1; padding:12px; background:var(--grad); color:var(--cream); border:none; border-radius:50px; font-family:'Manrope',sans-serif; font-weight:700; font-size:0.95rem; cursor:pointer; transition:filter 0.2s,transform 0.2s; }
+    .add-btn:hover { filter:brightness(1.08); transform:translateY(-1px); }
+    .carousel-wrap { padding:20px 20px 28px; border-top:1px solid rgba(181,22,30,0.12); position:relative; }
+    .carousel-track { display:flex; gap:12px; overflow-x:auto; scroll-behavior:smooth; scrollbar-width:none; padding:4px 2px; }
+    .carousel-track::-webkit-scrollbar { display:none; }
+    .thumb { flex:0 0 90px; background:var(--grad); border:2.5px solid transparent; border-radius:14px; height:82px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color 0.2s,transform 0.2s; }
+    .thumb:hover { transform:translateY(-3px); }
+    .thumb.active { border-color:var(--orange); }
+    .thumb svg { width:54px; height:54px; filter:drop-shadow(0 3px 8px rgba(0,0,0,0.25)); }
+    .carousel-arrow { position:absolute; top:50%; transform:translateY(-50%); width:32px; height:32px; border-radius:50%; background:white; border:2px solid var(--outline); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color 0.2s,color 0.2s; font-size:1rem; color:var(--on-var); z-index:5; }
+    .carousel-arrow:hover { border-color:var(--red); color:var(--red); }
+    .carousel-arrow.left { left:-16px; } .carousel-arrow.right { right:-16px; }
+    .modal-close { position:absolute; top:12px; right:14px; width:32px; height:32px; border-radius:50%; background:#F3F0EF; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; color:var(--on-var); transition:background 0.2s,color 0.2s; z-index:10; }
+    .modal-close:hover { background:var(--red); color:white; }
+    .ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.35); transform:scale(0); animation:ripple-anim 0.55s linear; pointer-events:none; }
+    @keyframes ripple-anim { to { transform:scale(4); opacity:0; } }
+    @media (max-width:600px) {
+      .modal-inner { flex-direction:column; }
+      .modal-image-wrap { border-radius:20px 20px 0 0; min-height:200px; flex:none; }
+      .modal-image-wrap svg { width:130px; height:130px; }
+      .page-header,.filters,.grid { padding-left:16px; padding-right:16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="{% url 'index' %}" class="navbar-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Volver
+  </a>
+  <a href="{% url 'index' %}" class="navbar-brand">
+    <img src="{% static 'logo.png' %}" alt="PanDa" />
+    PanDa
+  </a>
+  <button class="cart-btn" id="cart-btn" onclick="showCart()">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 2h2l2.5 8h7L16 5H5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="15" r="1.2" fill="white"/><circle cx="14" cy="15" r="1.2" fill="white"/></svg>
+    Carrito
+    <span class="cart-badge" id="cart-count">0</span>
+  </button>
+</nav>
+
+<div class="page-header">
+  <h1>Nuestros productos</h1>
+  <p>Panadería china artesanal · Elaborada con recetas de generaciones</p>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filterCards(this,'todos')">Todos</button>
+  <button class="filter-btn" onclick="filterCards(this,'clasico')">Clásicos</button>
+  <button class="filter-btn" onclick="filterCards(this,'vapor')">Al vapor</button>
+  <button class="filter-btn" onclick="filterCards(this,'hojaldrado')">Hojaldrados</button>
+  <button class="filter-btn" onclick="filterCards(this,'dulce')">Dulces</button>
+</div>
+
+<div class="grid" id="product-grid"></div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-inner">
+      <div class="modal-image-wrap" id="modal-img"></div>
+      <div class="modal-info">
+        <div class="modal-name" id="modal-name"></div>
+        <div class="modal-divider"></div>
+        <div class="modal-desc" id="modal-desc"></div>
+        <div class="modal-price" id="modal-price"></div>
+        <div class="modal-actions">
+          <div class="qty-wrap">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input class="qty-num" id="qty-input" type="number" value="1" min="1" max="99" readonly />
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <button class="add-btn" id="add-btn" onclick="addToCart()">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-wrap">
+      <button class="carousel-arrow left" onclick="scrollCarousel(-1)">‹</button>
+      <div class="carousel-track" id="carousel-track"></div>
+      <button class="carousel-arrow right" onclick="scrollCarousel(1)">›</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── SVG Illustrations ────────────────────────────────
+  function svgBun(size=120) {
+    return `<svg viewBox="0 0 120 120" width="${size}" height="${size}" fill="none"><ellipse cx="60" cy="68" rx="46" ry="32" fill="#D4892A" opacity="0.9"/><ellipse cx="60" cy="58" rx="44" ry="34" fill="#E8A845"/><ellipse cx="60" cy="55" rx="42" ry="32" fill="#F2BC60"/><path d="M25,55 C28,38 42,28 60,28 C78,28 92,38 95,55" stroke="#D4892A" stroke-width="3" fill="none" opacity="0.6"/><path d="M35,50 Q45,38 60,38 Q75,38 85,50" stroke="#C8821F" stroke-width="2.5" fill="none" opacity="0.5"/><ellipse cx="60" cy="78" rx="44" ry="10" fill="rgba(0,0,0,0.1)"/></svg>`;
+  }
+  function svgMooncake(size=120) {
+    return `<svg viewBox="0 0 120 120" width="${size}" height="${size}" fill="none"><ellipse cx="60" cy="72" rx="44" ry="10" fill="rgba(0,0,0,0.12)"/><rect x="14" y="26" width="92" height="52" rx="16" fill="#D4892A"/><rect x="16" y="28" width="88" height="48" rx="14" fill="#E8A845"/><circle cx="60" cy="52" r="18" fill="none" stroke="#C8821F" stroke-width="2.5"/><circle cx="60" cy="52" r="8" fill="none" stroke="#C8821F" stroke-width="2"/><circle cx="60" cy="52" r="3" fill="#C8821F" opacity="0.7"/><path d="M60,34 C62,42 68,44 60,52 C52,44 58,42 60,34Z" fill="#C8821F" opacity="0.45"/><path d="M60,34 C62,42 68,44 60,52 C52,44 58,42 60,34Z" fill="#C8821F" opacity="0.45" transform="rotate(60,60,52)"/><path d="M60,34 C62,42 68,44 60,52 C52,44 58,42 60,34Z" fill="#C8821F" opacity="0.45" transform="rotate(120,60,52)"/><path d="M60,34 C62,42 68,44 60,52 C52,44 58,42 60,34Z" fill="#C8821F" opacity="0.45" transform="rotate(180,60,52)"/><path d="M60,34 C62,42 68,44 60,52 C52,44 58,42 60,34Z" fill="#C8821F" opacity="0.45" transform="rotate(240,60,52)"/><path d="M60,34 C62,42 68,44 60,52 C52,44 58,42 60,34Z" fill="#C8821F" opacity="0.45" transform="rotate(300,60,52)"/></svg>`;
+  }
+  function svgBaozi(size=120) {
+    return `<svg viewBox="0 0 120 120" width="${size}" height="${size}" fill="none"><ellipse cx="60" cy="76" rx="40" ry="10" fill="rgba(0,0,0,0.10)"/><ellipse cx="60" cy="62" rx="40" ry="34" fill="#F5F0EB"/><ellipse cx="68" cy="55" rx="28" ry="22" fill="white" opacity="0.5"/><path d="M60,30 C58,28 55,27 54,30" stroke="#D4C8BC" stroke-width="2" stroke-linecap="round"/><path d="M60,30 C62,28 65,27 66,30" stroke="#D4C8BC" stroke-width="2" stroke-linecap="round"/><path d="M60,30 C57,25 56,22 60,22 C64,22 63,25 60,30" fill="#D4C8BC" opacity="0.7"/><path d="M46,40 C50,32 56,28 60,28 C64,28 70,32 74,40" stroke="#D4C8BC" stroke-width="1.8" fill="none" opacity="0.8"/><ellipse cx="60" cy="62" rx="14" ry="10" fill="#7B1C35" opacity="0.3"/></svg>`;
+  }
+  function svgEggTart(size=120) {
+    return `<svg viewBox="0 0 120 120" width="${size}" height="${size}" fill="none"><ellipse cx="60" cy="76" rx="38" ry="8" fill="rgba(0,0,0,0.12)"/><ellipse cx="60" cy="70" rx="38" ry="14" fill="#D4892A"/><path d="M22,62 L22,70 Q22,82 60,82 Q98,82 98,70 L98,62" fill="#E8A845"/><path d="M22,62 Q26,58 30,62 Q34,58 38,62 Q42,58 46,62 Q50,58 54,62 Q58,58 62,62 Q66,58 70,62 Q74,58 78,62 Q82,58 86,62 Q90,58 94,62 Q98,58 98,62" fill="#F2BC60"/><ellipse cx="60" cy="58" rx="32" ry="16" fill="#F5D06A"/><ellipse cx="60" cy="57" rx="28" ry="13" fill="#F7DC7A"/><ellipse cx="52" cy="54" rx="8" ry="5" fill="#E8A845" opacity="0.5"/></svg>`;
+  }
+  function svgAlmond(size=120) {
+    return `<svg viewBox="0 0 120 120" width="${size}" height="${size}" fill="none"><ellipse cx="60" cy="76" rx="36" ry="8" fill="rgba(0,0,0,0.10)"/><ellipse cx="44" cy="64" rx="26" ry="20" fill="#D4892A"/><ellipse cx="44" cy="62" rx="24" ry="18" fill="#E8A845"/><ellipse cx="44" cy="61" rx="22" ry="16" fill="#F2BC60"/><ellipse cx="76" cy="64" rx="26" ry="20" fill="#C8821F"/><ellipse cx="76" cy="62" rx="24" ry="18" fill="#D4892A"/><ellipse cx="76" cy="61" rx="22" ry="16" fill="#E8A845"/><ellipse cx="60" cy="66" rx="10" ry="7" fill="#C8821F"/><ellipse cx="44" cy="58" rx="8" ry="5" fill="#C8821F" transform="rotate(-15,44,58)"/><ellipse cx="44" cy="57" rx="6" ry="3.5" fill="#DBA55A" transform="rotate(-15,44,57)"/><ellipse cx="76" cy="58" rx="8" ry="5" fill="#A86C1A" transform="rotate(15,76,58)"/><ellipse cx="76" cy="57" rx="6" ry="3.5" fill="#C8901A" transform="rotate(15,76,57)"/></svg>`;
+  }
+  function svgWifeCake(size=120) {
+    return `<svg viewBox="0 0 120 120" width="${size}" height="${size}" fill="none"><ellipse cx="60" cy="76" rx="42" ry="10" fill="rgba(0,0,0,0.12)"/><ellipse cx="60" cy="62" rx="44" ry="28" fill="#D4892A"/><ellipse cx="60" cy="60" rx="42" ry="26" fill="#E8A845"/><path d="M18,60 Q22,52 30,54 Q38,56 40,62 Q38,68 30,68 Q22,68 18,60Z" fill="#F2BC60" opacity="0.8"/><path d="M60,38 Q88,38 100,52 Q105,58 102,66 Q98,74 84,76 L60,76Z" fill="#F2BC60"/><path d="M62,56 Q78,52 94,58" stroke="#D4892A" stroke-width="1.5" opacity="0.55" fill="none"/><path d="M62,62 Q80,58 96,62" stroke="#D4892A" stroke-width="1.5" opacity="0.45" fill="none"/><ellipse cx="80" cy="62" rx="10" ry="7" fill="#7B1C35" opacity="0.25"/></svg>`;
+  }
+
+  // ── Datos de productos desde Django ──────────────────
+  const DB_PRODUCTS = {{ productos_json|safe }};
+
+  const SVG_MAP = {
+    'Pan Cocktail': svgBun,
+    'Pastel de Luna': svgMooncake,
+    'Baozi de Frijol Negro': svgBaozi,
+    'Tarta de Huevo': svgEggTart,
+    'Galleta de Almendra': svgAlmond,
+    'Wife Cake': svgWifeCake,
+  };
+  const SVG_LIST = [svgBun, svgMooncake, svgBaozi, svgEggTart, svgAlmond, svgWifeCake];
+
+  const CATEGORY_MAP = {
+    'Pan Cocktail': 'clasico', 'Pastel de Luna': 'clasico',
+    'Baozi de Frijol Negro': 'vapor',
+    'Tarta de Huevo': 'hojaldrado', 'Wife Cake': 'hojaldrado',
+    'Galleta de Almendra': 'dulce',
+  };
+
+  const PRODUCTS = DB_PRODUCTS.map((p, i) => ({
+    id: p.id,
+    name: p.nombre,
+    shortDesc: p.descripcion.length > 80 ? p.descripcion.substring(0, 80) + '…' : p.descripcion,
+    fullDesc: p.descripcion,
+    price: p.precio_base,
+    category: CATEGORY_MAP[p.nombre] || 'clasico',
+    svgFn: SVG_MAP[p.nombre] || SVG_LIST[i % SVG_LIST.length],
+  }));
+
+  // ── Render grid ───────────────────────────────────────
+  const grid = document.getElementById('product-grid');
+
+  function renderGrid(filter = 'todos') {
+    grid.innerHTML = '';
+    const shown = filter === 'todos' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
+    shown.forEach((p, i) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.animationDelay = (i * 0.07 + 0.05) + 's';
+      card.dataset.id = p.id;
+      card.innerHTML = `
+        <div class="card-image">${p.svgFn(100)}</div>
+        <div class="card-body">
+          <div class="card-name">${p.name}</div>
+          <div class="card-desc">${p.shortDesc}</div>
+          <div class="card-price">$${p.price.toFixed(2)} MXN</div>
+        </div>`;
+      card.addEventListener('click', () => openModal(p.id));
+      grid.appendChild(card);
+    });
+  }
+
+  renderGrid();
+
+  function filterCards(btn, cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid(cat);
+  }
+
+  // ── Modal ─────────────────────────────────────────────
+  let currentProductId = null;
+  let qty = 1;
+
+  function openModal(id) {
+    const p = PRODUCTS.find(x => x.id === id);
+    currentProductId = id;
+    qty = 1;
+    document.getElementById('qty-input').value = 1;
+    document.getElementById('modal-img').innerHTML = p.svgFn(180);
+    document.getElementById('modal-name').textContent = p.name;
+    document.getElementById('modal-desc').textContent = p.fullDesc;
+    document.getElementById('modal-price').textContent = `$${p.price.toFixed(2)} MXN`;
+
+    const track = document.getElementById('carousel-track');
+    track.innerHTML = '';
+    PRODUCTS.forEach(prod => {
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb' + (prod.id === id ? ' active' : '');
+      thumb.innerHTML = prod.svgFn(48);
+      thumb.addEventListener('click', () => openModal(prod.id));
+      track.appendChild(thumb);
+    });
+
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  function changeQty(delta) {
+    qty = Math.max(1, Math.min(99, qty + delta));
+    document.getElementById('qty-input').value = qty;
+  }
+
+  let cartCount = 0;
+
+  function addToCart() {
+    cartCount += qty;
+    document.getElementById('cart-count').textContent = cartCount;
+    const btn = document.getElementById('add-btn');
+    btn.textContent = '¡Agregado! ✓';
+    btn.style.background = 'linear-gradient(135deg,#2e7d32,#43a047)';
+    setTimeout(() => {
+      btn.textContent = 'Agregar al carrito';
+      btn.style.background = '';
+      closeModal();
+    }, 1100);
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    r.style.cssText = `width:${size}px;height:${size}px;left:0;top:0`;
+    btn.appendChild(r);
+    setTimeout(() => r.remove(), 560);
+  }
+
+  function showCart() {
+    alert(`Tienes ${cartCount} producto(s) en tu carrito. 🛒\n\n(Función próximamente disponible)`);
+  }
+
+  function scrollCarousel(dir) {
+    document.getElementById('carousel-track').scrollLeft += dir * 110;
+  }
+</script>
+</body>
+</html>
