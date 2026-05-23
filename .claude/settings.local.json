@@ -24,7 +24,14 @@
       "Skill(vercel:deploy)",
       "PowerShell(Get-ChildItem *)",
       "Bash(vercel *)",
-      "PowerShell(vercel *)"
+      "PowerShell(vercel *)",
+      "Bash(git branch *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(Remove-Item *)",
+      "Bash(git check-ignore *)",
+      "Bash(git rm *)",
+      "Bash(git push *)"
     ]
   }
 }
