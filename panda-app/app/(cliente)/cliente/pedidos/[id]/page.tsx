@@ -11,8 +11,8 @@ interface Props {
 /* ── Mapas de estatus ──────────────────────────────────────── */
 
 const PEDIDO_LABEL: Record<string, string> = {
-  CREATED:     'Creado',
-  IN_PROGRESS: 'En preparación',
+  CREATED:     'Confirmado',
+  IN_PROGRESS: 'Empacado',
   DELIVERED:   'Entregado',
   CANCELLED:   'Cancelado',
   REFUNDED:    'Reembolsado',

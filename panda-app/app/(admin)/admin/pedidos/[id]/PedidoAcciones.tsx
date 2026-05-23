@@ -13,7 +13,7 @@ const ESTATUS_SIGUIENTES: Record<string, string[]> = {
 };
 
 const ESTATUS_LABEL: Record<string, string> = {
-  IN_PROGRESS: 'En preparación', DELIVERED: 'Entregado',
+  IN_PROGRESS: 'Empacado', DELIVERED: 'Entregado',
   CANCELLED: 'Cancelado', REFUNDED: 'Reembolsado',
 };
 

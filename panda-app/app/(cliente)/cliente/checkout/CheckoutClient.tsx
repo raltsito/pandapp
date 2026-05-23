@@ -215,12 +215,10 @@ export function CheckoutClient({ idUser, nombre, direccion }: Props) {
         estatus: 'PAID', monto: total,
       });
 
-      await supabase.from('pedido').update({ estatus: 'IN_PROGRESS' }).eq('id_pedido', pedido.id_pedido);
-
       await supabase.from('event_log').insert({
         id_pedido:        pedido.id_pedido,
         estatus_anterior: 'CREATED',
-        estatus_nuevo:    'IN_PROGRESS',
+        estatus_nuevo:    'CREATED',
         descripcion:      `Pago confirmado — ${metodo}`,
       });
 

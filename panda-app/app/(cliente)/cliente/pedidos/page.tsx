@@ -4,8 +4,8 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
 const ESTATUS_LABEL: Record<string, string> = {
-  CREATED:     'Creado',
-  IN_PROGRESS: 'En progreso',
+  CREATED:     'Confirmado',
+  IN_PROGRESS: 'Empacado',
   DELIVERED:   'Entregado',
   CANCELLED:   'Cancelado',
   REFUNDED:    'Reembolsado',

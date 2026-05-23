@@ -4,7 +4,7 @@ import { getSessionUser } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 
 const ESTATUS_LABEL: Record<string, string> = {
-  CREATED: 'Creado', IN_PROGRESS: 'En progreso',
+  CREATED: 'Confirmado', IN_PROGRESS: 'Empacado',
   DELIVERED: 'Entregado', CANCELLED: 'Cancelado', REFUNDED: 'Reembolsado',
 };
 const ESTATUS_COLOR: Record<string, string> = {
