@@ -18,7 +18,7 @@ INSERT INTO public.producto (nombre, descripcion, precio_base, activo, foto_url)
 
   ('Tarta de Huevo Portuguesa',
    'Tartaleta crujiente de hojaldre con crema pastelera flameada al estilo Macao.',
-   38.00, TRUE, '/assets/productos/tartaHuevo.jpeg'),
+   38.00, TRUE, '/assets/productos/tartaHuevo.png'),
 
   ('Pastel de Zanahoria',
    'Bizcocho de zanahoria con nuez y cubierta de queso crema. Personalizable.',
@@ -54,7 +54,7 @@ INSERT INTO public.producto (nombre, descripcion, precio_base, activo, foto_url)
 
   ('Jian Dui (Bolitas de Ajonjolí)',
    'Bolitas fritas de masa de arroz glutinoso cubiertas de ajonjolí, rellenas de pasta de frijol dulce.',
-   50.00, TRUE, '/assets/productos/jianDui.jpeg');
+   50.00, TRUE, '/assets/productos/jianDui.png');
 
 -- Inventario inicial (1:1 con cada producto)
 INSERT INTO public.inventario (id_producto, stock_disponible, stock_reservado)
