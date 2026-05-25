@@ -8,7 +8,7 @@ UPDATE public.producto SET activo = FALSE WHERE nombre = 'Pastel de Chocolate Tr
 UPDATE public.producto SET activo = FALSE WHERE nombre = 'Pan de Dulce Surtido';
 
 -- Actualizar foto_url de productos existentes
-UPDATE public.producto SET foto_url = '/assets/productos/pastelLuna.jpeg'   WHERE nombre = 'Pastel de Luna Tradicional';
+UPDATE public.producto SET foto_url = '/assets/productos/pastelLuna.png'    WHERE nombre = 'Pastel de Luna Tradicional';
 UPDATE public.producto SET foto_url = '/assets/productos/baoCerdo.png'      WHERE nombre = 'Bao de Cerdo BBQ';
 UPDATE public.producto SET foto_url = '/assets/productos/tartaHuevo.png'   WHERE nombre = 'Tarta de Huevo Portuguesa';
 UPDATE public.producto SET foto_url = '/assets/productos/zanahoria.png'     WHERE nombre = 'Pastel de Zanahoria';

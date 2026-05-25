@@ -115,9 +115,9 @@ export function CatalogoGrid({ productos }: { productos: ProductoConStock[] }) {
             onMouseEnter={e => { if (p.stock_disponible > 0) { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-6px)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 48px rgba(181,22,30,0.18)'; } }}
             onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ''; (e.currentTarget as HTMLDivElement).style.boxShadow = ''; }}
           >
-            <div style={{ height: '180px', background: 'linear-gradient(160deg,#B5161E,#C94A1A 50%,#FFB467)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <div style={{ height: '220px', background: 'linear-gradient(160deg,#B5161E,#C94A1A 50%,#FFB467)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
               {p.foto_url
-                ? <img src={p.foto_url} alt={p.nombre} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '12px' }} />
+                ? <img src={p.foto_url} alt={p.nombre} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
                 : <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '4rem', color: 'rgba(255,239,237,0.85)' }}>{p.nombre.charAt(0)}</span>
               }
               {p.stock_disponible === 0 && (
@@ -162,7 +162,7 @@ export function CatalogoGrid({ productos }: { productos: ProductoConStock[] }) {
                 padding: '30px', minHeight: '320px', overflow: 'hidden',
               }}>
                 {selected.foto_url
-                  ? <img src={selected.foto_url} alt={selected.nombre} style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'contain', filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.15))' }} />
+                  ? <img src={selected.foto_url} alt={selected.nombre} style={{ maxWidth: '240px', maxHeight: '240px', objectFit: 'contain', filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.2))' }} />
                   : <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '7rem', color: 'rgba(255,239,237,0.85)', lineHeight: 1, filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.25))' }}>
                       {selected.nombre.charAt(0)}
                     </span>

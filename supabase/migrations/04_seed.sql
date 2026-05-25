@@ -10,7 +10,7 @@
 INSERT INTO public.producto (nombre, descripcion, precio_base, activo, foto_url) VALUES
   ('Pastel de Luna Tradicional',
    'Pastel de luna chino artesanal con relleno de pasta de loto y yema salada al centro. Empaque dorado.',
-   85.00, TRUE, '/assets/productos/pastelLuna.jpeg'),
+   85.00, TRUE, '/assets/productos/pastelLuna.png'),
 
   ('Bao de Cerdo BBQ',
    'Pan al vapor esponjoso relleno de cerdo asado estilo cantonés con salsa hoisin.',
